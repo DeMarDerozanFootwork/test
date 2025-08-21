@@ -1,0 +1,18 @@
+phantom_project(hal)
+
+if (${PHANTOM_AI_BUILD_PLATFORM} STREQUAL "TDA4X" OR ${PHANTOM_AI_BUILD_PLATFORM} STREQUAL "AM62A")
+  message_info("########################")
+  message_info("Initializing Phantom HAL for supported platforms: TISOC")
+  message_info("########################")
+  include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+  add_subdirectory(ti_core_lib)
+  add_subdirectory(hal_lib)
+  add_subdirectory(phantom_gst_lib)
+  #if(${PHANTOM_AI_TI_SOC} STREQUAL "TDA4X")
+  #  if(DEFINED BUILD_TI_IMAGE_KERNEL)
+  #  add_definitions(-DTI_DSP_OVX_ENABLED)
+  #  add_3rd_party_dir(tiPhantomImageKernel)
+  #  endif()
+  #endif()
+endif()
+
