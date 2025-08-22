@@ -1,0 +1,14 @@
+encoding_image_by_h264: true
+
+# Synchronous, low-latency H.264 encoding pipeline.
+# `appsrc` is the entry point for our NV12 data.
+# `v4l2h264enc` is the hardware encoder. `gop-size` is key for low latency.
+# `h264parse` makes the stream decodable.
+# `appsink` is the exit point where we grab the encoded data.
+h264_pipeline_string: >
+  appsrc name=h264_source is-live=true format=time block=true
+  caps=video/x-raw,format=NV12,width=%d,height=%d,framerate=15/1,interlace-mode=progressive,colorimetry=bt709 !
+  queue !
+  v4l2h264enc extra-controls="controls,video_bitrate=(int)4000000,video_gop_size=(int)15" !
+  h264parse config-interval=-1 !
+  appsink name=h264_sink emit-signals=true max-buffers=1 drop=true
